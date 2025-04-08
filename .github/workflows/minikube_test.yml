@@ -30,7 +30,7 @@ jobs:
         kubectl apply -f kube-deploy/03-java-app-deployment/mysql/mysql.yml
         kubectl get sts -n pet-clinic-db
         kubectl get pod -n pet-clinic-db
-        kubectl wait --for=condition=Ready pod/mysql-service -n pet-clinic-db
+        kubectl wait --for=condition=Ready pod/mysql-0 -n pet-clinic-db
         kubectl get sts -n pet-clinic-db
     - name: Deploy Java app
       run : |
