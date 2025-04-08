@@ -40,4 +40,4 @@ jobs:
         minikube service list
         minikube service java-app-service --url   
         echo "------------------opening the service------------------"
-        curl $(minikube service java-app-service --url)
+        curl $(minikube service java-app-service --url -n pet-clinic-app)
