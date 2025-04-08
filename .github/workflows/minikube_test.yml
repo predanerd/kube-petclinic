@@ -7,24 +7,37 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    name: build example and deploy to minikube
+    name: build and deploy to minikube
     steps:
     - uses: actions/checkout@v4
       with:
-        repository: medyagh/local-dev-example-with-minikube
+        repository: predanerd/kube-petclinic
     - name: Start minikube
       uses: medyagh/setup-minikube@latest
-    - name: Try the cluster!
-      run: kubectl get pods -A
-    - name: Build image
+    - name: Create namespaces
       run: |
-        minikube image build -t local/devex:v1 .
-    - name: Deploy to minikube
-      run:
-        kubectl apply -f deploy/k8s.yaml && kubectl wait --for=condition=ready pod -l app=local-devex
+        kubectl create ns pet-clinic-app
+        kubectl create ns pet-clinic-db
+    - name: Secret for SQL database
+      run: |
+        kubectl apply -f kube-deploy/03-java-app-deployment/secret.yml
+        kubectl get secret -n pet-clinic-app
+        kubectl get secret -n pet-clinic-db
+    - name: Create and deploy SQL
+      run : |
+        kubectl apply -f kube-deploy/03-java-app-deployment/mysql/configmap.yml
+        kubectl get cm -n pet-clinic-db
+        kubectl apply -f kube-deploy/03-java-app-deployment/mysql/mysql.yml
+        kubectl get sts -n pet-clinic-db
+    - name: Deploy Java app
+      run : |
+        kubectl apply -f kube-deploy/03-java-app-deployment/java-app/configmap.yml
+        kubectl get cm -n pet-clinic-app
+        kubectl apply -f kube-deploy/03-java-app-deployment/java-app/java.yml
+        kubectl get deploy -n pet-clinic-app
     - name: Test service URLs
       run: |
         minikube service list
-        minikube service local-devex-svc --url
+        minikube service local-devex-svc --url   
         echo "------------------opening the service------------------"
         curl $(minikube service local-devex-svc --url)
