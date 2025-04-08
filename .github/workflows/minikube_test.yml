@@ -36,7 +36,7 @@ jobs:
         kubectl get cm -n pet-clinic-app
         kubectl apply -f kube-deploy/03-java-app-deployment/java-app/java.yml
         kubectl get pods -n pet-clinic-app
-        kubectl wait --for=condition=Ready pod/java-app -n pet-clinic-app
+        kubectl wait --for=condition=Ready pod/java-app-59b86b76fc-jwxxw -n pet-clinic-app
         kubectl get deploy -n pet-clinic-app
     - name: Test service URLs
       run: |
