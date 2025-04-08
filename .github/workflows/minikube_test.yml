@@ -28,6 +28,7 @@ jobs:
         kubectl apply -f kube-deploy/03-java-app-deployment/mysql/configmap.yml
         kubectl get cm -n pet-clinic-db
         kubectl apply -f kube-deploy/03-java-app-deployment/mysql/mysql.yml
+        kubectl wait --for=condition=Ready service/mysql-service
         kubectl get sts -n pet-clinic-db
     - name: Deploy Java app
       run : |
