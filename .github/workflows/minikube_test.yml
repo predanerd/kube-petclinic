@@ -1,4 +1,4 @@
-icename: Deploy to minikube and test
+name: Deploy to minikube and test
 
 on:
   push:
