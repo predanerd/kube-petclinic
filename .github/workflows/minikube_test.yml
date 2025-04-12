@@ -21,6 +21,7 @@ jobs:
     - name: Secret for SQL database
       run: |
         kubectl apply -f kube-deploy/03-java-app-deployment/secret.yml
+        kubectl apply -f kube-deploy/03-java-app-deployment/secret_db.yml
         kubectl get secret -n pet-clinic-app
         kubectl get secret -n pet-clinic-db
     - name: Create and deploy SQL
