@@ -41,6 +41,6 @@ jobs:
     - name: Test service URLs
       run: |
         minikube service list
-        minikube service java-app-service --url   
+        minikube service java-app-service -n pet-clinic-app --url   
         echo "------------------opening the service------------------"
         curl $(minikube service java-app-service -n pet-clinic-app --url)
